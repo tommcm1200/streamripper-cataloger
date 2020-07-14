@@ -1,0 +1,111 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  streamripper-dynamodb-populator - catalogs streamripper shows from s3 events.
+
+  Sample SAM Template for streamripper-dynamodb-cataloger
+
+Parameters:
+  S3FanOutTopicArn:
+    Type: String
+  ExpiryTime:
+    Type: String
+    Description: How long do you want items to live in latet episode
+    Default: 7
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  CatalogerFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: lambda-cataloger/
+      Handler: cataloger.lambda_handler
+      Runtime: python3.7
+      Policies:
+        - DynamoDBWritePolicy:
+            TableName: !Ref CatalogTable
+
+      Environment:
+        Variables:
+          ddb_catalog: !Ref CatalogTable
+      Events:
+        S3FanOutTopic:
+          Type: SNS
+          Properties:
+            Topic: !Ref S3FanOutTopicArn
+
+  DDBStreamProcessorFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: lambda-ddbstream-processor/
+      Handler: processor.lambda_handler
+      Runtime: python3.7
+      Policies:
+        - AWSLambdaDynamoDBExecutionRole
+        - DynamoDBWritePolicy:
+              TableName: !Ref LatestEpisodeTable
+      Events:
+        DDBEvent:
+          Type: DynamoDB
+          Properties:
+            Stream: !GetAtt CatalogTable.StreamArn
+            StartingPosition: LATEST
+      Environment:
+        Variables:
+          ddb_latest_episodes: !Ref LatestEpisodeTable
+          expiry_time: !Ref ExpiryTime
+
+  CatalogTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: show_name
+          AttributeType: S
+        - AttributeName: show_time
+          AttributeType: N
+      KeySchema:
+        - AttributeName: show_name
+          KeyType: HASH
+        - AttributeName: show_time
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+      TableName: streamripper_catalog
+
+  LatestEpisodeTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: show_time
+          AttributeType: N
+      KeySchema:
+        - AttributeName: show_time
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      TableName: streamripper_latest_episode
+      TimeToLiveSpecification:
+        AttributeName: expiry_ttl
+        Enabled: true
+
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  CatalogerFunction:
+    Description: "Hello World Lambda Function ARN"
+    Value: !GetAtt CatalogerFunction.Arn
+  DDBStreamProcessorFunction:
+    Description: "Hello World Lambda Function ARN"
+    Value: !GetAtt DDBStreamProcessorFunction.Arn
+  CatalogerFunctionIamRole:
+    Description: "Implicit IAM Role created for CatalogerFunction"
+    Value: !GetAtt CatalogerFunction.Arn
+  DDBStreamProcessorFunctionIamRole:
+    Description: "Implicit IAM Role created for DDBStreamProcessorFunction"
+    Value: !GetAtt DDBStreamProcessorFunction.Arn

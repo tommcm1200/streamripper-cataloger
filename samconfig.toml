@@ -1,0 +1,11 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "streamripper-dynamodb-cataloger"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-17k83buigtilx"
+s3_prefix = "streamripper-dynamodb-cataloger"
+region = "ap-southeast-2"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "S3FanOutTopicArn=\"arn:aws:sns:ap-southeast-2:447119549480:streamripper_s3_fan_out\" ExpiryTime=\"7\""
+

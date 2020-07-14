@@ -1,0 +1,41 @@
+{
+	"Records": [{
+		"eventID": "cfea895beef2c515eb70131dfd7422e1",
+		"eventName": "INSERT",
+		"eventVersion": "1.1",
+		"eventSource": "aws:dynamodb",
+		"awsRegion": "ap-southeast-2",
+		"dynamodb": {
+			"ApproximateCreationDateTime": 1594683051.0,
+			"Keys": {
+				"show_time": {
+					"N": "1594598400"
+				},
+				"show_name": {
+					"S": "TEST"
+				}
+			},
+			"NewImage": {
+				"show_time": {
+					"N": "1594598400"
+				},
+				"size": {
+					"N": "480906"
+				},
+				"radio_station": {
+					"S": "PBS"
+				},
+				"show_name": {
+					"S": "TEST"
+				},
+				"show_key": {
+					"S": "PBS/TEST/PBS-TEST-2020-07-13_Mon_2330.mp3"
+				}
+			},
+			"SequenceNumber": "40593500000000003157189019",
+			"SizeBytes": 127,
+			"StreamViewType": "NEW_IMAGE"
+		},
+		"eventSourceARN": "arn:aws:dynamodb:ap-southeast-2:447119549480:table/streamripper_catalog/stream/2020-07-05T10:04:46.859"
+	}]
+}

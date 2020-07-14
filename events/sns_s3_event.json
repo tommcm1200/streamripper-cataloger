@@ -1,0 +1,57 @@
+{
+  "Records": [{
+		"EventSource": "aws:sns",
+		"EventVersion": "1.0",
+		"EventSubscriptionArn": "arn:aws:sns:ap-southeast-2:447119549480:streamripper_s3_fan_out:8c4481f1-76a3-446e-9612-836ad0f2f51c",
+		"Sns": {
+			"Type": "Notification",
+			"MessageId": "668ceb6c-3568-51aa-b773-bc104ae1de93",
+			"TopicArn": "arn:aws:sns:ap-southeast-2:447119549480:streamripper_s3_fan_out",
+			"Subject": "Amazon S3 Notification",
+			"Message": {
+    "Records": [
+        {
+            "eventVersion": "2.1",
+            "eventSource": "aws:s3",
+            "awsRegion": "ap-southeast-2",
+            "eventTime": "2020-07-06T02:48:39.863Z",
+            "eventName": "ObjectCreated:Put",
+            "userIdentity": {
+                "principalId": "AWS:AROAIGBIJ3NX7LFUTHUS6:f0f343d1-ab4a-4707-822e-4b29e3edeb55"
+            },
+            "requestParameters": {
+                "sourceIPAddress": "172.31.29.91"
+            },
+            "responseElements": {
+                "x-amz-request-id": "0XFK9P1G1ZBZ0N1G",
+                "x-amz-id-2": "Fg99YH0Tdi1yfgThJRC6dGx6P1/oE01O4SNdBEpwIiLiKL6Kzfuz/rRoizUr7/KKYpLnH3Lw8YKuzAH3edUBlj1nYcS2k+lL"
+            },
+            "s3": {
+                "s3SchemaVersion": "1.0",
+                "configurationId": "674f4d80-fad7-4f5f-9256-e6bbc28ce06d",
+                "bucket": {
+                    "name": "tommcm-streamripper",
+                    "ownerIdentity": {
+                        "principalId": "AA11ZWYFWUVVE"
+                    },
+                    "arn": "arn:aws:s3:::tommcm-streamripper"
+                },
+                "object": {
+                    "key": "PBS/TEST/PBS-TEST-2020-07-06_Mon_0248.mp3",
+                    "size": 480906,
+                    "eTag": "8221c748681b52c69d72ced3a6ff3307",
+                    "sequencer": "005F02910A3E41DD89"
+                }
+            }
+        }
+    ]
+},
+			"Timestamp": "2020-07-06T01:24:25.826Z",
+			"SignatureVersion": "1",
+			"Signature": "gxzVz/leN1Ycp8bz7e2E3qLmjumkO+LaEvpObtyP97TPleXnr1kdxhjsKM47VV+R9+Vv2kB/KrZ2Acc8cYh4JHwjQJe8I0N1wbHNC+eE6AjET+Hysdj7ynyQsIdKMLXoWWVHX8epJf8yYJFWu7+UAOayKlMRgQipt1fn1OVwkGJNtFKXk53WQvk+hFX+SefdZC8riPvG3O9fBMuIgy9JyZN0b6de/y9s3hQjOXZc0pUVQXBiYBJp1qFf1H7VizvRCinIrfZyKJbclj3pRfoCABO3QZSh9ttSdIqxUpNU/MN1gghUg1FHWVG2jPbDnmKnOEQPIbxs3edjoHN9EBebEQ==",
+			"SigningCertUrl": "https://sns.ap-southeast-2.amazonaws.com/SimpleNotificationService-a86cb10b4e1f29c941702d737128f7b6.pem",
+			"UnsubscribeUrl": "https://sns.ap-southeast-2.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:ap-southeast-2:447119549480:streamripper_s3_fan_out:8c4481f1-76a3-446e-9612-836ad0f2f51c",
+			"MessageAttributes": {}
+		}
+	}]
+}
